@@ -1,4 +1,5 @@
 {{ 'premium-templates.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'premium-hero.js' | asset_url }}" defer></script>
 
 {%- assign primary_color = block.settings.primary_color -%}
 {%- assign secondary_color = block.settings.secondary_color -%}
@@ -11,6 +12,9 @@
 <div 
   id="premium-hero-wrapper-{{ block.id }}"
   class="hero-template-wrapper tpl-{{ template_id }}"
+  data-template-id="{{ template_id }}"
+  data-block-id="{{ block.id }}"
+  data-shop="{{ shop.permanent_domain }}"
   style="background-color: {{ secondary_color }}; background-image: linear-gradient(135deg, {{ secondary_color }} 0%, rgba(10,10,10,0.15) 100%); min-height: 500px; padding: 4rem 2rem;"
 >
   {%- if bg_image != blank -%}
@@ -61,64 +65,9 @@
   </div>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var templateId = "{{ template_id }}";
-    var shop = "{{ shop.permanent_domain }}";
-    var blockId = "{{ block.id }}";
-
-    // 1. Fetch customized template settings from App Proxy
-    fetch("/apps/premium-hero-proxy?template_id=" + encodeURIComponent(templateId) + "&shop=" + encodeURIComponent(shop))
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (data && data.success && data.customization) {
-          var cust = data.customization;
-          
-          if (cust.heading) {
-            document.getElementById("premium-hero-heading-" + blockId).innerText = cust.heading;
-          }
-          if (cust.description) {
-            document.getElementById("premium-hero-description-" + blockId).innerText = cust.description;
-          }
-          if (cust.buttonText) {
-            document.getElementById("premium-hero-btn-" + blockId).innerText = cust.buttonText;
-          }
-          if (cust.primaryColor) {
-            document.getElementById("premium-hero-heading-" + blockId).style.color = cust.primaryColor;
-            document.getElementById("premium-hero-btn-" + blockId).style.backgroundColor = cust.primaryColor;
-          }
-          if (cust.secondaryColor) {
-            document.getElementById("premium-hero-wrapper-" + blockId).style.backgroundColor = cust.secondaryColor;
-            document.getElementById("premium-hero-wrapper-" + blockId).style.backgroundImage = "linear-gradient(135deg, " + cust.secondaryColor + " 0%, rgba(10,10,10,0.15) 100%)";
-          }
-          if (cust.image) {
-            var bgImg = document.getElementById("premium-hero-bg-" + blockId);
-            if (bgImg) {
-              bgImg.src = cust.image;
-            } else {
-              var wrapper = document.getElementById("premium-hero-wrapper-" + blockId);
-              var img = document.createElement("img");
-              img.id = "premium-hero-bg-" + blockId;
-              img.className = "hero-media-bg";
-              img.src = cust.image;
-              img.alt = "Hero Background";
-              img.style.opacity = "0.4";
-              img.width = 1500;
-              img.height = 800;
-              wrapper.insertBefore(img, wrapper.firstChild);
-            }
-          }
-        }
-      })
-      .catch(function(err) {
-        console.error("Error fetching hero settings:", err);
-      });
-  });
-</script>
-
 {% schema %}
 {
-  "name": "Furniture Hero Section",
+  "name": "Furniture Hero [Premium]",
   "target": "section",
   "settings": [
     {

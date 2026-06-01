@@ -73,6 +73,18 @@ export const action = async ({ request }) => {
   }
 
   if (actionType === "save") {
+    // 1. Fetch user subscription status
+    const subscription = await prisma.shopSubscription.findUnique({
+      where: { shop },
+    });
+    const plan = subscription ? subscription.plan : "FREE";
+
+    // 2. Validate template access permissions
+    const unlocked = plan === "PREMIUM" || (plan === "PRO" && template.tier === "pro") || template.tier === "free";
+    if (!unlocked) {
+      return { error: `Plan upgrade required to save this design. This template is tier: ${template.tier.toUpperCase()}` };
+    }
+
     const heading = formData.get("heading") || "";
     const description = formData.get("description") || "";
     const buttonText = formData.get("buttonText") || "";
@@ -138,6 +150,8 @@ export default function TemplateDetailPage() {
   useEffect(() => {
     if (actionData?.success && actionData.actionType === "save") {
       shopify.toast.show("🎉 Template customizations saved successfully!");
+    } else if (actionData?.error) {
+      shopify.toast.show(`❌ ${actionData.error}`, { isError: true });
     }
   }, [actionData, shopify]);
 
