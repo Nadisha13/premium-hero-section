@@ -1,17 +1,32 @@
-import { redirect } from "react-router";
 import { authenticate } from "../shopify.server";
 
 export async function loader({ request }) {
   try {
-    const { billing } = await authenticate.admin(request);
+    const { billing, redirect: shopifyRedirect } = await authenticate.admin(request);
+    const url = new URL(request.url);
+    const shop = url.searchParams.get("shop") || "";
+    const host = url.searchParams.get("host") || "";
+
+    let appUrl = process.env.SHOPIFY_APP_URL || process.env.HOST;
+    const hostHeader = request.headers.get("host");
+
+    if (process.env.NODE_ENV === "development") {
+      appUrl = process.env.HOST || hostHeader || appUrl;
+    }
+
+    if (appUrl && !appUrl.startsWith("http")) {
+      appUrl = `https://${appUrl}`;
+    }
+
+    const returnUrl = `${appUrl}/app?plan=PRO&shop=${shop}&host=${encodeURIComponent(host)}`;
 
     const confirmation = await billing.request({
       plan: "Pro Plan",
-      isTest: true,
-      returnUrl: "https://herosection.unitradein.com/app",
+      isTest: false,
+      returnUrl: returnUrl,
     });
 
-    return redirect(confirmation.confirmationUrl);
+    return shopifyRedirect(confirmation.confirmationUrl);
   } catch (error) {
     if (error instanceof Response) {
       throw error;

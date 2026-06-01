@@ -19,23 +19,24 @@ const host = new URL(appUrl).hostname;
 
 export default defineConfig({
   server: {
-    allowedHosts: [host, ".tunnelmole.net"],
+    allowedHosts: [host, ".tunnelmole.net", ".trycloudflare.com"],
     cors: {
       preflightContinue: true,
+      origin: true,
     },
     port: Number(process.env.PORT || 3000),
 
-    hmr: host && !host.includes("localhost") && !host.includes("127.0.0.1") && !host.includes("::1")
-      ? {
-          host: host,
-          clientPort: 443,
-          protocol: "wss",
-        }
-      : true,
+    // Disable HMR for Cloudflare tunnel to prevent WebSocket errors
+    // Cloudflare doesn't handle WebSocket HMR well, so we disable it
+    hmr: process.env.NODE_ENV === "development" && process.env.SHOPIFY_APP_URL
+      ? false  // Disable HMR when using tunnel URLs (Cloudflare, ngrok, etc.)
+      : true,  // Enable HMR for local development only
 
     fs: {
       allow: ["app", "node_modules"],
     },
+
+    middlewareMode: false,
   },
 
   plugins: [reactRouter(), tsconfigPaths()],

@@ -24,6 +24,8 @@ export default async function handleRequest(
   }
 
   // Shopify Embedded App CSP Fix with dynamic frame-ancestors
+  // Allow wss: for WebSocket connections and allow 'unsafe-eval' for App Bridge
+  // Disable HMR WebSocket errors by not enforcing strict WebSocket CSP
   responseHeaders.set(
     "Content-Security-Policy",
     `
@@ -32,8 +34,12 @@ export default async function handleRequest(
       script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.shopify.com;
       style-src 'self' 'unsafe-inline' https:;
       img-src 'self' data: https:;
-      connect-src 'self' https: wss:;
+      connect-src 'self' https: wss: ws: blob:;
       font-src 'self' https: data:;
+      frame-src 'self' https:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
     `
       .replace(/\s+/g, " ")
       .trim(),
@@ -53,6 +59,12 @@ export default async function handleRequest(
   responseHeaders.set(
     "Access-Control-Allow-Private-Network",
     "true",
+  );
+
+  // Prevent frame busting and ensure proper frame embedding
+  responseHeaders.set(
+    "X-Frame-Options",
+    "SAMEORIGIN",
   );
 
   const userAgent = request.headers.get("user-agent");

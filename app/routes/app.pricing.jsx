@@ -21,7 +21,7 @@ export const loader = async ({ request }) => {
   // 2. Query Shopify Billing API to check active subscriptions
   const billingCheck = await billing.check({
     plans: ["Pro Plan", "Elite Plan"],
-    isTest: true,
+    isTest: false,
   });
 
   let activePlan = "FREE";
@@ -73,7 +73,7 @@ export const action = async ({ request }) => {
       // 1. Query Shopify Billing API to check active subscriptions
       const billingCheck = await billing.check({
         plans: ["Pro Plan", "Elite Plan"],
-        isTest: true,
+        isTest: false,
       });
 
       // 2. Cancel active subscriptions on Shopify if any
@@ -83,7 +83,7 @@ export const action = async ({ request }) => {
             try {
               await billing.cancel({
                 subscriptionId: sub.id,
-                isTest: true,
+                isTest: false,
                 prorate: true,
               });
             } catch (err) {
@@ -150,7 +150,7 @@ export const action = async ({ request }) => {
     // Request billing charge. This will return a redirect Response to the confirmation URL.
     return await billing.request({
       plan: targetPlan,
-      isTest: true,
+      isTest: false,
       returnUrl: returnUrl,
     });
 
@@ -189,7 +189,12 @@ export default function PricingPage() {
       shopify.toast.show(`Error: ${fetcher.data.error}`, { isError: true });
     }
     if (fetcher.data?.redirectUrl) {
-      window.top.location.href = fetcher.data.redirectUrl;
+      // Safely redirect only if not in error state
+      if (window.location.protocol !== "chrome-error:") {
+        window.top.location.href = fetcher.data.redirectUrl;
+      } else {
+        shopify.toast.show("Connection issue. Please refresh and try again.", { isError: true });
+      }
     }
   }, [fetcher.data, shopify]);
 
