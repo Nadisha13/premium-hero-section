@@ -125,7 +125,6 @@
             if (bgImg) {
               bgImg.src = cust.image;
             } else {
-              // If bgImage is not present in original template, create it
               var wrapper = document.getElementById("premium-hero-wrapper-" + blockId);
               var img = document.createElement("img");
               img.id = "premium-hero-bg-" + blockId;
@@ -133,6 +132,8 @@
               img.src = cust.image;
               img.alt = "Hero Background";
               img.style.opacity = "0.4";
+              img.width = 1500;
+              img.height = 800;
               wrapper.insertBefore(img, wrapper.firstChild);
             }
           }
@@ -142,14 +143,13 @@
         console.error("Error fetching hero settings:", err);
       });
 
-    // 2. Handle AJAX Submission of contact form to App Proxy (so page doesn't reload)
+    // 2. Handle AJAX Submission
     var form = document.getElementById("premium-hero-form-" + blockId);
     var statusDiv = document.getElementById("premium-hero-status-" + blockId);
     
     if (form) {
       form.addEventListener("submit", function(e) {
         e.preventDefault();
-        
         var formData = new FormData(form);
         
         fetch("/apps/premium-hero-proxy", {
@@ -184,32 +184,32 @@
 
 {% schema %}
 {
-  "name": "Premium Hero Section",
+  "name": "Fashion Hero Section",
   "target": "section",
   "settings": [
     {
       "type": "text",
       "id": "template_id",
       "label": "Template ID",
-      "default": "basic-free"
+      "default": "fashion-premium"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Hero Heading",
-      "default": "Minimal Static Hero"
+      "default": "Haute Couture Motion"
     },
     {
       "type": "textarea",
       "id": "description",
       "label": "Hero Description",
-      "default": "A clean, static form layout perfect for standard data collection."
+      "default": "Cinematic dark theme with slow-motion fabric movement and luxury model showcase."
     },
     {
       "type": "text",
       "id": "button_text",
       "label": "CTA Button Text",
-      "default": "Use Free Template"
+      "default": "Apply For Membership"
     },
     {
       "type": "image_picker",
@@ -220,13 +220,13 @@
       "type": "color",
       "id": "primary_color",
       "label": "Primary Accent Color",
-      "default": "#38bdf8"
+      "default": "#c5a880"
     },
     {
       "type": "color",
       "id": "secondary_color",
       "label": "Background Color",
-      "default": "#0b0f19"
+      "default": "#121212"
     }
   ]
 }

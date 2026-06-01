@@ -206,7 +206,7 @@ export default function TemplateDetailPage() {
   );
 
   const shopName = shop.replace(".myshopify.com", "");
-  const themeEditorUrl = `https://admin.shopify.com/store/${shopName}/themes/current/editor?context=apps`;
+  const themeEditorUrl = `https://admin.shopify.com/store/${shopName}/themes/current/editor`;
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#0b0f19", color: "#f8fafc", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
