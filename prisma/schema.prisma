@@ -51,3 +51,20 @@ model FormSubmission {
   createdAt   DateTime @default(now())
 }
 
+model CustomizedTemplate {
+  id              String   @id @default(uuid())
+  shop            String
+  templateId      String
+  heading         String
+  description     String
+  buttonText      String
+  image           String?
+  primaryColor    String?
+  secondaryColor  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([shop, templateId])
+}
+
+

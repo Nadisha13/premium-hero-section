@@ -49,7 +49,7 @@ export const TEMPLATES = [
     accentColor: "#c5a880",
     bgColor: "#121212",
     bgGradient: "linear-gradient(180deg, #1c1c1c 0%, #0d0d0d 100%)",
-    image: "https://images.unsplash.com/photo-1509631179647-0c500ba14175?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-walking-on-a-runway-41804-large.mp4",
     buttonText: "Apply For Membership",
     fields: [
@@ -89,7 +89,7 @@ export const TEMPLATES = [
     accentColor: "#d4af37",
     bgColor: "#0f172a",
     bgGradient: "linear-gradient(135deg, #090d16 0%, #172554 100%)",
-    image: "https://images.unsplash.com/photo-1599643478514-4a4e06bc80fd?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-diamond-ring-on-a-mirror-with-water-droplets-40539-large.mp4",
     buttonText: "Book Artisan Consult",
     fields: [
@@ -245,7 +245,7 @@ export const TEMPLATES = [
     accentColor: "#b45309",
     bgColor: "#1e1b18",
     bgGradient: "linear-gradient(135deg, #1e1b18 0%, #12100e 100%)",
-    image: "https://images.unsplash.com/photo-1495474472205-51f7596cb103?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-coffee-maker-making-coffee-2879-large.mp4",
     buttonText: "Configure Coffee Box",
     fields: [

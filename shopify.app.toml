@@ -47,3 +47,9 @@ required = true
 [metaobjects.app.example.fields.description]
 name = "Description"
 type = "multi_line_text_field"
+
+[app_proxy]
+url = "https://premium-hero-section.vercel.app/api/proxy"
+subpath = "premium-hero-proxy"
+prefix = "apps"
+

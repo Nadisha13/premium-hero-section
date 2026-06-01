@@ -1,0 +1,898 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&display=swap');
+
+/* --- Root Variables & Theme Tokens --- */
+:root {
+  --font-serif-luxury: 'Cormorant Garamond', 'Playfair Display', serif;
+  --font-serif-classic: 'Playfair Display', Georgia, serif;
+  --font-sans-modern: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
+  --font-tech: 'Space Grotesk', monospace;
+  --font-gym: 'Syne', 'Montserrat', sans-serif;
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.2s ease-out;
+}
+
+/* --- Container Styles --- */
+.hero-template-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+  font-family: var(--font-sans-modern);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-media-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+  will-change: transform, filter;
+  animation: elegantFadeIn 1s ease-out forwards;
+}
+
+@keyframes elegantFadeIn {
+  from { opacity: 0; transform: scale(1.05); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.hero-template-wrapper:hover .hero-media-bg.pro-zoom {
+  transform: scale(1.05);
+}
+
+.hero-template-wrapper:hover .overlay-premium + .hero-layout-content {
+  /* optional hover interactions for premium */
+}
+
+/* Motion blur effect for premium videos on container hover */
+.hero-template-wrapper:hover video.hero-media-bg {
+  transform: scale(1.03);
+  filter: saturate(1.2) contrast(1.1);
+}
+
+.hero-media-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transition: background 0.8s ease;
+}
+
+/* Base overlay gradients for text readability */
+.overlay-pro {
+  background: linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 100%);
+  backdrop-filter: blur(2px);
+}
+
+.overlay-premium {
+  background: linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(0,0,0,0.4) 100%);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hero-layout-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.animated-premium-badge {
+  background: linear-gradient(90deg, #a855f7, #f97316, #a855f7);
+  background-size: 200% auto;
+  color: transparent !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+  display: inline-block;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.hero-layout-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1200px;
+  width: 100%;
+  align-items: center;
+}
+
+.hero-layout-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+}
+
+.hero-layout-card-bg {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 3rem;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-layout-card-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+  z-index: 1;
+}
+
+.hero-layout-card-bg .hero-form-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 460px;
+}
+
+/* --- Form and Inputs Reset --- */
+.hero-form-container {
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.hero-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.hero-form-group label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hero-form-group input,
+.hero-form-group select {
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: white;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  font-family: inherit;
+  transition: var(--transition-fast);
+}
+
+.hero-form-submit-btn {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: var(--transition-smooth);
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* --- Typography --- */
+.hero-tagline {
+  font-size: 3.5rem;
+  line-height: 1.15;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.hero-description {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   BRAND TEMPLATE SPECIFICS
+   ========================================================================== */
+
+/* --- 1. Fashion Pro: Classic Editorial --- */
+.tpl-fashion-pro {
+  background: linear-gradient(135deg, #FAF6F0 0%, #EFE9DB 100%);
+  color: #2D2721;
+}
+.tpl-fashion-pro .hero-tagline {
+  font-family: var(--font-serif-classic);
+  font-size: 3.8rem;
+  font-weight: 400;
+  font-style: italic;
+}
+.tpl-fashion-pro .hero-form-container {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(45, 39, 33, 0.08);
+  backdrop-filter: blur(12px);
+}
+.tpl-fashion-pro .hero-form-group label {
+  color: #65594F;
+  font-family: var(--font-serif-classic);
+  font-style: italic;
+  text-transform: capitalize;
+  font-size: 0.95rem;
+}
+.tpl-fashion-pro input,
+.tpl-fashion-pro select {
+  border-color: #D3C7B9;
+  background: rgba(255, 255, 255, 0.9);
+  color: #2D2721;
+}
+.tpl-fashion-pro input:focus,
+.tpl-fashion-pro select:focus {
+  border-color: #2D2721;
+  box-shadow: 0 0 0 3px rgba(45, 39, 33, 0.08);
+}
+.tpl-fashion-pro .hero-form-submit-btn {
+  background: #2D2721;
+  color: #FAF6F0;
+  font-family: var(--font-sans-modern);
+}
+.tpl-fashion-pro .hero-form-submit-btn:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(217, 119, 6, 0.2);
+}
+
+/* --- 2. Fashion Premium: Luxury Dark Silhouette --- */
+.tpl-fashion-premium {
+  background: linear-gradient(180deg, #181818 0%, #080808 100%);
+  color: #F3EFE9;
+}
+.tpl-fashion-premium .hero-tagline {
+  font-family: var(--font-serif-luxury);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.tpl-fashion-premium .hero-form-container {
+  background: rgba(20, 20, 20, 0.75);
+  border: 1px solid rgba(197, 168, 128, 0.25);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+}
+.tpl-fashion-premium .hero-form-container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(197,168,128,0.1), transparent);
+  transition: 0.8s;
+}
+.tpl-fashion-premium .hero-form-container:hover::before {
+  left: 150%;
+}
+.tpl-fashion-premium .hero-form-group label {
+  color: #c5a880;
+  letter-spacing: 0.1em;
+}
+.tpl-fashion-premium input,
+.tpl-fashion-premium select {
+  background: #1e1e1e;
+  border-color: rgba(197, 168, 128, 0.3);
+  color: #FAF6F0;
+}
+.tpl-fashion-premium input:focus,
+.tpl-fashion-premium select:focus {
+  border-color: #c5a880;
+  box-shadow: 0 0 10px rgba(197, 168, 128, 0.25);
+}
+.tpl-fashion-premium .hero-form-submit-btn {
+  background: linear-gradient(135deg, #c5a880 0%, #a48558 100%);
+  color: #121212;
+}
+.tpl-fashion-premium .hero-form-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(197, 168, 128, 0.4);
+}
+
+/* --- 3. Jewelry Pro: Minimalist Lustre --- */
+.tpl-jewelry-pro {
+  background: linear-gradient(135deg, #FCFBF7 0%, #F5F1E6 100%);
+  color: #3C3630;
+}
+.tpl-jewelry-pro .hero-tagline {
+  font-family: 'Cinzel', serif;
+  font-weight: 400;
+  font-size: 3.2rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.tpl-jewelry-pro .hero-form-container {
+  background: transparent;
+  border: 1px solid rgba(60, 54, 48, 0.15);
+  padding: 3rem 2rem;
+}
+.tpl-jewelry-pro .hero-form-group label {
+  color: #7C7368;
+}
+.tpl-jewelry-pro input,
+.tpl-jewelry-pro select {
+  border-radius: 0px;
+  border-width: 0 0 1px 0;
+  border-color: rgba(60, 54, 48, 0.3);
+  background: transparent;
+  padding: 0.75rem 0.25rem;
+}
+.tpl-jewelry-pro input:focus,
+.tpl-jewelry-pro select:focus {
+  border-color: #7c2d12;
+}
+.tpl-jewelry-pro .hero-form-submit-btn {
+  border-radius: 0px;
+  background: #3C3630;
+  color: #FCFBF7;
+}
+.tpl-jewelry-pro .hero-form-submit-btn:hover {
+  background: #7c2d12;
+  box-shadow: 0 4px 10px rgba(124, 45, 18, 0.25);
+}
+
+/* --- 4. Jewelry Premium: Bespoke Royal Carat --- */
+.tpl-jewelry-premium {
+  background: linear-gradient(135deg, #090d16 0%, #152238 100%);
+  color: #FFFFFF;
+}
+.tpl-jewelry-premium .hero-tagline {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  background: linear-gradient(to right, #ffffff, #ffeaa7, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tpl-jewelry-premium .hero-form-container {
+  background: rgba(13, 22, 38, 0.85);
+  border: 1.5px solid #d4af37;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+  border-radius: 20px;
+}
+.tpl-jewelry-premium .hero-form-group label {
+  color: #ffeaa7;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+}
+.tpl-jewelry-premium input,
+.tpl-jewelry-premium select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: white;
+}
+.tpl-jewelry-premium input:focus,
+.tpl-jewelry-premium select:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+.tpl-jewelry-premium .hero-form-submit-btn {
+  background: #d4af37;
+  color: #090d16;
+  font-family: 'Cinzel', serif;
+  font-weight: 800;
+}
+.tpl-jewelry-premium .hero-form-submit-btn:hover {
+  background: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* --- 5. Tech Pro: Cyber Grid Console --- */
+.tpl-tech-pro {
+  background: linear-gradient(180deg, #070a13 0%, #01040a 100%);
+  color: #c9d1d9;
+  font-family: var(--font-tech);
+  position: relative;
+}
+.tpl-tech-pro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 30px 30px;
+  background-image: 
+    linear-gradient(to right, rgba(6, 182, 212, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 182, 212, 0.04) 1px, transparent 1px);
+  pointer-events: none;
+}
+.tpl-tech-pro .hero-tagline {
+  font-family: var(--font-tech);
+  color: #06b6d4;
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+.tpl-tech-pro .hero-form-container {
+  background: rgba(10, 15, 30, 0.9);
+  border: 1px solid #06b6d4;
+  border-radius: 4px;
+}
+.tpl-tech-pro .hero-form-group label {
+  color: #06b6d4;
+  font-family: var(--font-tech);
+}
+.tpl-tech-pro input,
+.tpl-tech-pro select {
+  border-radius: 4px;
+  background: #020617;
+  border: 1px solid #1e293b;
+  color: #06b6d4;
+  font-family: var(--font-tech);
+}
+.tpl-tech-pro input:focus,
+.tpl-tech-pro select:focus {
+  border-color: #06b6d4;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+}
+.tpl-tech-pro .hero-form-submit-btn {
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid #06b6d4;
+  color: #06b6d4;
+  font-family: var(--font-tech);
+}
+.tpl-tech-pro .hero-form-submit-btn:hover {
+  background: #06b6d4;
+  color: #020617;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+}
+
+/* --- 6. Tech Premium: Glassmorphic HUD --- */
+.tpl-tech-premium {
+  background: radial-gradient(circle at top left, #1e093c 0%, #030107 70%);
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+}
+.tpl-tech-premium::before {
+  content: "";
+  position: absolute;
+  top: 10%; left: 10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(168,85,247,0.4) 0%, transparent 70%);
+  z-index: 0;
+  filter: blur(50px);
+}
+.tpl-tech-premium .hero-tagline {
+  font-family: var(--font-tech);
+  font-weight: 700;
+  background: linear-gradient(to right, #a855f7, #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tpl-tech-premium .hero-form-container {
+  background: rgba(15, 10, 30, 0.55);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(168, 85, 247, 0.2);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  z-index: 1;
+}
+.tpl-tech-premium .hero-form-group label {
+  color: #f97316;
+}
+.tpl-tech-premium input,
+.tpl-tech-premium select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 12px;
+}
+.tpl-tech-premium input:focus,
+.tpl-tech-premium select:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+}
+.tpl-tech-premium .hero-form-submit-btn {
+  background: linear-gradient(135deg, #a855f7 0%, #f97316 100%);
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+}
+.tpl-tech-premium .hero-form-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5);
+}
+
+/* --- 7. Skincare Pro: Organic Botanical Dew --- */
+.tpl-skincare-pro {
+  background: linear-gradient(135deg, #f3f6f1 0%, #dbe2d6 100%);
+  color: #2F3E2C;
+}
+.tpl-skincare-pro .hero-tagline {
+  font-family: var(--font-sans-modern);
+  font-weight: 600;
+  color: #1b2e18;
+}
+.tpl-skincare-pro .hero-form-container {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(47, 62, 44, 0.05);
+  border: 1px solid rgba(47, 62, 44, 0.05);
+}
+.tpl-skincare-pro .hero-form-group label {
+  color: #556B4E;
+}
+.tpl-skincare-pro input,
+.tpl-skincare-pro select {
+  background: #fbfcfb;
+  border: 1px solid #ccd5c9;
+  color: #2F3E2C;
+}
+.tpl-skincare-pro input:focus,
+.tpl-skincare-pro select:focus {
+  border-color: #15803d;
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.1);
+}
+.tpl-skincare-pro .hero-form-submit-btn {
+  background: #2E452B;
+  color: white;
+  border-radius: 50px;
+}
+.tpl-skincare-pro .hero-form-submit-btn:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+/* --- 8. Skincare Premium: Lavender Glow Concierge --- */
+.tpl-skincare-premium {
+  background: linear-gradient(135deg, #f7f3fb 0%, #e0d1ec 100%);
+  color: #4C2E6D;
+}
+.tpl-skincare-premium .hero-tagline {
+  font-family: var(--font-sans-modern);
+  font-weight: 800;
+  background: linear-gradient(to right, #5c2c90, #9851a6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tpl-skincare-premium .hero-form-container {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 20px 40px rgba(76, 46, 109, 0.06);
+}
+.tpl-skincare-premium .hero-form-group label {
+  color: #7A53A3;
+}
+.tpl-skincare-premium input,
+.tpl-skincare-premium select {
+  background: white;
+  border: 1.5px solid #dcd1eb;
+  border-radius: 12px;
+  color: #4c2e6d;
+}
+.tpl-skincare-premium input:focus,
+.tpl-skincare-premium select:focus {
+  border-color: #7e22ce;
+  box-shadow: 0 0 0 4px rgba(126, 34, 206, 0.12);
+}
+.tpl-skincare-premium .hero-form-submit-btn {
+  background: linear-gradient(135deg, #7e22ce 0%, #b862eb 100%);
+  color: white;
+  border-radius: 50px;
+  font-weight: 700;
+}
+.tpl-skincare-premium .hero-form-submit-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(126, 34, 206, 0.2);
+}
+
+/* --- 9. Gym Pro: High-Octane Iron --- */
+.tpl-gym-pro {
+  background: #050505;
+  color: #ffffff;
+  font-family: var(--font-gym);
+}
+.tpl-gym-pro .hero-tagline {
+  font-family: var(--font-gym);
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  transform: skewX(-6deg);
+}
+.tpl-gym-pro .hero-form-container {
+  background: #111111;
+  border-left: 5px solid #dc2626;
+  border-radius: 0px;
+}
+.tpl-gym-pro .hero-form-group label {
+  color: #999;
+}
+.tpl-gym-pro input,
+.tpl-gym-pro select {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  color: white;
+  border-radius: 0px;
+  font-family: var(--font-gym);
+}
+.tpl-gym-pro input:focus,
+.tpl-gym-pro select:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 10px rgba(220, 38, 38, 0.3);
+}
+.tpl-gym-pro .hero-form-submit-btn {
+  background: #dc2626;
+  color: white;
+  border-radius: 0px;
+  font-family: var(--font-gym);
+  font-weight: 800;
+}
+.tpl-gym-pro .hero-form-submit-btn:hover {
+  background: white;
+  color: #dc2626;
+  transform: skewX(-6deg);
+}
+
+/* --- 10. Gym Premium: Alpha Core --- */
+.tpl-gym-premium {
+  background: #080604;
+  color: #ffffff;
+  font-family: var(--font-gym);
+  position: relative;
+}
+.tpl-gym-premium .hero-tagline {
+  font-family: var(--font-gym);
+  font-weight: 900;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(234, 88, 12, 0.4);
+  background: linear-gradient(135deg, #ffffff 0%, #ea580c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tpl-gym-premium .hero-form-container {
+  background: rgba(15, 12, 10, 0.95);
+  border: 2px solid #ea580c;
+  box-shadow: 0 0 30px rgba(234, 88, 12, 0.2);
+}
+.tpl-gym-premium .hero-form-group label {
+  color: #ea580c;
+}
+.tpl-gym-premium input,
+.tpl-gym-premium select {
+  background: #110e0c;
+  border: 1px solid #ea580c;
+  color: white;
+  border-radius: 4px;
+}
+.tpl-gym-premium input:focus,
+.tpl-gym-premium select:focus {
+  border-color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+.tpl-gym-premium .hero-form-submit-btn {
+  background: #ea580c;
+  color: white;
+  font-weight: 800;
+  border-radius: 4px;
+}
+.tpl-gym-premium .hero-form-submit-btn:hover {
+  background: #ffffff;
+  color: #ea580c;
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.4);
+}
+
+/* --- 11. Coffee Pro: Cozy Brew --- */
+.tpl-coffee-pro {
+  background: linear-gradient(135deg, #FAF6F0 0%, #EDE1CD 100%);
+  color: #4A3E3D;
+}
+.tpl-coffee-pro .hero-tagline {
+  font-family: var(--font-serif-classic);
+  font-weight: 700;
+  color: #3b2826;
+}
+.tpl-coffee-pro .hero-form-container {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  border: 1px solid rgba(59, 40, 38, 0.1);
+  box-shadow: 0 8px 24px rgba(59, 40, 38, 0.05);
+}
+.tpl-coffee-pro .hero-form-group label {
+  color: #7A6966;
+}
+.tpl-coffee-pro input,
+.tpl-coffee-pro select {
+  border-color: #CFBFA9;
+  background: white;
+  border-radius: 8px;
+}
+.tpl-coffee-pro input:focus,
+.tpl-coffee-pro select:focus {
+  border-color: #854d0e;
+  box-shadow: 0 0 0 3px rgba(133, 77, 14, 0.1);
+}
+.tpl-coffee-pro .hero-form-submit-btn {
+  background: #5c3826;
+  color: white;
+  border-radius: 8px;
+}
+.tpl-coffee-pro .hero-form-submit-btn:hover {
+  background: #854d0e;
+  transform: translateY(-1px);
+}
+
+/* --- 12. Coffee Premium: Reserve Roast --- */
+.tpl-coffee-premium {
+  background: linear-gradient(135deg, #1A1513 0%, #0C0A09 100%);
+  color: #EDE8E6;
+}
+.tpl-coffee-premium .hero-tagline {
+  font-family: var(--font-serif-luxury);
+  font-style: italic;
+  font-weight: 300;
+  color: #fce8e6;
+}
+.tpl-coffee-premium .hero-form-container {
+  background: #251e1b;
+  border: 1px dashed rgba(180, 83, 9, 0.4);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+  border-radius: 16px;
+}
+.tpl-coffee-premium .hero-form-group label {
+  color: #b45309;
+}
+.tpl-coffee-premium input,
+.tpl-coffee-premium select {
+  background: #171311;
+  border: 1px solid #4a3b37;
+  color: white;
+}
+.tpl-coffee-premium input:focus,
+.tpl-coffee-premium select:focus {
+  border-color: #b45309;
+  box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.25);
+}
+.tpl-coffee-premium .hero-form-submit-btn {
+  background: #b45309;
+  color: white;
+}
+.tpl-coffee-premium .hero-form-submit-btn:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(180, 83, 9, 0.35);
+}
+
+/* --- 13. Furniture Pro: Modernist --- */
+.tpl-furniture-pro {
+  background: linear-gradient(135deg, #F8F7F4 0%, #E7E3D4 100%);
+  color: #1E293B;
+}
+.tpl-furniture-pro .hero-tagline {
+  font-family: var(--font-serif-classic);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.tpl-furniture-pro .hero-form-container {
+  background: white;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+  border-radius: 0px;
+}
+.tpl-furniture-pro .hero-form-group label {
+  color: #64748B;
+}
+.tpl-furniture-pro input,
+.tpl-furniture-pro select {
+  border-radius: 0px;
+  border: 1px solid #CBD5E1;
+}
+.tpl-furniture-pro input:focus,
+.tpl-furniture-pro select:focus {
+  border-color: #1e3a8a;
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
+}
+.tpl-furniture-pro .hero-form-submit-btn {
+  background: #1E293B;
+  color: white;
+  border-radius: 0px;
+}
+.tpl-furniture-pro .hero-form-submit-btn:hover {
+  background: #1e3a8a;
+  transform: translateY(-1px);
+}
+
+/* --- 14. Furniture Premium: Atelier --- */
+.tpl-furniture-premium {
+  background: linear-gradient(135deg, #121515 0%, #0B0C0C 100%);
+  color: #FFFFFF;
+}
+.tpl-furniture-premium .hero-tagline {
+  font-family: var(--font-serif-luxury);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.tpl-furniture-premium .hero-form-container {
+  background: rgba(30, 35, 35, 0.65);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+.tpl-furniture-premium .hero-form-group label {
+  color: #a3a3a3;
+  letter-spacing: 0.1em;
+}
+.tpl-furniture-premium input,
+.tpl-furniture-premium select {
+  background: #1d2020;
+  border: 1px solid #3d4242;
+  color: white;
+  border-radius: 4px;
+}
+.tpl-furniture-premium input:focus,
+.tpl-furniture-premium select:focus {
+  border-color: #a3a3a3;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+}
+.tpl-furniture-premium .hero-form-submit-btn {
+  background: #022c22;
+  color: #a7f3d0;
+  border: 1px solid #064e3b;
+  border-radius: 4px;
+}
+.tpl-furniture-premium .hero-form-submit-btn:hover {
+  background: #064e3b;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(6, 78, 59, 0.4);
+}
+
+/* --- Responsive Layout Adjustments --- */
+@media (max-width: 900px) {
+  .hero-layout-split {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .hero-tagline {
+    font-size: 2.8rem;
+  }
+}
+@media (max-width: 600px) {
+  .hero-template-wrapper {
+    padding: 2rem 1rem;
+  }
+  .hero-tagline {
+    font-size: 2.2rem;
+  }
+  .hero-form-container {
+    padding: 1.5rem;
+  }
+}

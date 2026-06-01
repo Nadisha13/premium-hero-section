@@ -19,13 +19,19 @@ const host = new URL(appUrl).hostname;
 
 export default defineConfig({
   server: {
-    allowedHosts: [host],
+    allowedHosts: [host, ".tunnelmole.net"],
     cors: {
       preflightContinue: true,
     },
     port: Number(process.env.PORT || 3000),
 
-    hmr: false,
+    hmr: host && !host.includes("localhost") && !host.includes("127.0.0.1") && !host.includes("::1")
+      ? {
+          host: host,
+          clientPort: 443,
+          protocol: "wss",
+        }
+      : true,
 
     fs: {
       allow: ["app", "node_modules"],
