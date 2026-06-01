@@ -13,7 +13,7 @@ export const loader = async ({ params, request }) => {
   // Query Shopify Billing API to check active subscriptions
   const billingCheck = await billing.check({
     plans: ["Pro Plan", "Elite Plan"],
-    isTest: true,
+    isTest: false,
   });
 
   let activePlan = "FREE";
