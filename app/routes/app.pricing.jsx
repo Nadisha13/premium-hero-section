@@ -5,6 +5,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 import "../styles/pricing.css";
 import prisma from "../db.server";
+import { isBillingTestMode } from "../billing.server";
 
 export const loader = async ({ request }) => {
   const { session, billing, redirect: shopifyRedirect } = await authenticate.admin(request);
@@ -21,7 +22,7 @@ export const loader = async ({ request }) => {
   // 2. Query Shopify Billing API to check active subscriptions
   const billingCheck = await billing.check({
     plans: ["Pro Plan", "Elite Plan"],
-    isTest: false,
+    isTest: isBillingTestMode(shop),
   });
 
   let activePlan = "FREE";
@@ -73,7 +74,7 @@ export const action = async ({ request }) => {
       // 1. Query Shopify Billing API to check active subscriptions
       const billingCheck = await billing.check({
         plans: ["Pro Plan", "Elite Plan"],
-        isTest: false,
+        isTest: isBillingTestMode(shop),
       });
 
       // 2. Cancel active subscriptions on Shopify if any
@@ -83,7 +84,7 @@ export const action = async ({ request }) => {
             try {
               await billing.cancel({
                 subscriptionId: sub.id,
-                isTest: false,
+                isTest: isBillingTestMode(shop),
                 prorate: true,
               });
             } catch (err) {
@@ -150,7 +151,7 @@ export const action = async ({ request }) => {
     // Request billing charge. This will return a redirect Response to the confirmation URL.
     return await billing.request({
       plan: targetPlan,
-      isTest: false,
+      isTest: isBillingTestMode(shop),
       returnUrl: returnUrl,
     });
 

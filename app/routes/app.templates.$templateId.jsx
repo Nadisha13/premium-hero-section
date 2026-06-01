@@ -5,6 +5,7 @@ import { TEMPLATES } from "../data/templates";
 import "../styles/premium-templates.css";
 import prisma from "../db.server";
 import { authenticate } from "../shopify.server";
+import { isBillingTestMode } from "../billing.server";
 
 export const loader = async ({ params, request }) => {
   const { session, billing } = await authenticate.admin(request);
@@ -13,7 +14,7 @@ export const loader = async ({ params, request }) => {
   // Query Shopify Billing API to check active subscriptions
   const billingCheck = await billing.check({
     plans: ["Pro Plan", "Elite Plan"],
-    isTest: false,
+    isTest: isBillingTestMode(shop),
   });
 
   let activePlan = "FREE";

@@ -1,4 +1,5 @@
 import { authenticate } from "../shopify.server";
+import { isBillingTestMode } from "../billing.server";
 
 export async function loader({ request }) {
   try {
@@ -22,7 +23,7 @@ export async function loader({ request }) {
 
     const confirmation = await billing.request({
       plan: "Pro Plan",
-      isTest: false,
+      isTest: isBillingTestMode(shop),
       returnUrl: returnUrl,
     });
 
