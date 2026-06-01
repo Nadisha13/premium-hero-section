@@ -2,8 +2,12 @@
 import { Outlet, useLoaderData, Link, useLocation } from "react-router";
 
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
+import { boundary } from "@shopify/shopify-app-react-router/server";
+import { authenticate } from "../shopify.server";
 
-export const loader = async () => {
+export const loader = async ({ request }) => {
+  await authenticate.admin(request);
+
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
 
@@ -24,5 +28,7 @@ export default function App() {
   );
 }
 
-// Shopify needs React Router to catch some thrown responses, so that their headers are included in the response.
+export const headers = (headersArgs) => {
+  return boundary.headers(headersArgs);
+};
 

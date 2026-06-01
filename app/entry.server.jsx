@@ -61,12 +61,6 @@ export default async function handleRequest(
     "true",
   );
 
-  // Prevent frame busting and ensure proper frame embedding
-  responseHeaders.set(
-    "X-Frame-Options",
-    "SAMEORIGIN",
-  );
-
   const userAgent = request.headers.get("user-agent");
 
   const callbackName = isbot(userAgent ?? "")
