@@ -15,19 +15,9 @@ export const action = async ({ request }) => {
         // but we acknowledge the compliance request.
         break;
 
-      case "CUSTOMERS_REDACT":
+            case "CUSTOMERS_REDACT":
         // Triggered when a store owner requests that customer data be deleted.
         console.log("Customer redact payload:", JSON.stringify(payload));
-        if (payload?.customer?.email) {
-          const customerEmail = payload.customer.email;
-          console.log(`Redacting form submissions for customer: ${customerEmail}`);
-          await db.formSubmission.deleteMany({
-            where: {
-              shop,
-              email: customerEmail
-            }
-          });
-        }
         break;
 
       case "SHOP_REDACT":
@@ -35,15 +25,11 @@ export const action = async ({ request }) => {
         console.log("Shop redact payload:", JSON.stringify(payload));
         if (shop) {
           console.log(`Erasure request: Redacting all database records for shop: ${shop}`);
-          // 1. Delete form submissions
-          await db.formSubmission.deleteMany({
-            where: { shop }
-          });
-          // 2. Delete subscription plans
+          // 1. Delete subscription plans
           await db.shopSubscription.deleteMany({
             where: { shop }
           });
-          // 3. Delete auth sessions
+          // 2. Delete auth sessions
           await db.session.deleteMany({
             where: { shop }
           });

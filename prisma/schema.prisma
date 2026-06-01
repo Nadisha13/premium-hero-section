@@ -40,16 +40,7 @@ model ShopSubscription {
   updatedAt DateTime @updatedAt
 }
 
-model FormSubmission {
-  id          String   @id @default(uuid())
-  shop        String
-  templateId  String
-  brand       String
-  name        String
-  email       String
-  formData    String   // Store additional custom fields as JSON string
-  createdAt   DateTime @default(now())
-}
+
 
 model CustomizedTemplate {
   id              String   @id @default(uuid())

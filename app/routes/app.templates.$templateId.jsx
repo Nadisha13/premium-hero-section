@@ -110,35 +110,7 @@ export const action = async ({ request }) => {
     return { success: true, actionType: "save", savedCustomization };
   }
 
-  // Handle template contact form mock submissions
-  const submissionData = {};
-  let name = "Anonymous User";
-  let email = "no-email@example.com";
-
-  for (const [key, value] of formData.entries()) {
-    if (key === "templateId" || key === "actionType") continue;
-    
-    if (key.toLowerCase().includes("name")) {
-      name = value.toString();
-    } else if (key.toLowerCase().includes("email")) {
-      email = value.toString();
-    } else {
-      submissionData[key] = value.toString();
-    }
-  }
-
-  await prisma.formSubmission.create({
-    data: {
-      shop,
-      templateId,
-      brand: template.brand,
-      name,
-      email,
-      formData: JSON.stringify(submissionData),
-    },
-  });
-
-  return { success: true, actionType: "submit" };
+  return { success: false };
 };
 
 export default function TemplateDetailPage() {
@@ -164,12 +136,8 @@ export default function TemplateDetailPage() {
 
   // Show Toast when saved successfully
   useEffect(() => {
-    if (actionData?.success) {
-      if (actionData.actionType === "save") {
-        shopify.toast.show("🎉 Template customizations saved successfully!");
-      } else if (actionData.actionType === "submit") {
-        shopify.toast.show("🚀 Mock subscription submitted successfully!");
-      }
+    if (actionData?.success && actionData.actionType === "save") {
+      shopify.toast.show("🎉 Template customizations saved successfully!");
     }
   }, [actionData, shopify]);
 
@@ -260,7 +228,7 @@ export default function TemplateDetailPage() {
             How Merchants Use This Template
           </h3>
           <ul style={{ margin: 0, paddingLeft: "1.1rem", fontSize: "0.75rem", color: "#94a3b8", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-            <li><strong>1. Customize:</strong> Modify heading, description, button, colors & imagery below.</li>
+            <li><strong>1. Customize:</strong> Modify heading, description, CTA button, colors & imagery below.</li>
             <li><strong>2. Save Settings:</strong> Click "Save Template" to store in database.</li>
             <li><strong>3. Add Block:</strong> Click "Apply to Theme" to open Shopify's Editor.</li>
             <li><strong>4. Dynamic Sync:</strong> The App Block automatically retrieves your saved settings.</li>
@@ -555,7 +523,7 @@ export default function TemplateDetailPage() {
                 backgroundColor: secondaryColor,
                 backgroundImage: `linear-gradient(135deg, ${secondaryColor} 0%, rgba(10,10,10,0.15) 100%)`,
                 flex: 1,
-                padding: "3rem 1.5rem",
+                padding: "4rem 2rem",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center"
@@ -595,104 +563,36 @@ export default function TemplateDetailPage() {
                     {description}
                   </p>
 
-                  {/* Form Submission Sandbox (Lead Collection) */}
-                  <div style={{
-                    background: "rgba(15, 23, 42, 0.75)",
-                    border: "1px solid rgba(255, 255, 255, 0.12)",
-                    borderRadius: "16px",
-                    padding: "2rem",
-                    maxWidth: "460px",
-                    width: "100%",
-                    margin: "2.5rem auto 0 auto",
-                    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.35)",
-                    backdropFilter: "blur(12px)",
-                    textAlign: "left"
-                  }}>
-                    <form className="hero-form" method="post">
-                      <input type="hidden" name="templateId" value={template.id} />
-                      <input type="hidden" name="actionType" value="submit" />
-                      
-                      <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                        {template.fields.map((field) => (
-                          <div key={field.name} className="hero-form-group">
-                            <label style={{
-                              color: "#94a3b8",
-                              fontSize: "0.8rem",
-                              fontWeight: "600",
-                              textTransform: "uppercase",
-                              letterSpacing: "0.05em",
-                              marginBottom: "0.3rem"
-                            }} htmlFor={field.name}>
-                              {field.label}
-                            </label>
-                            
-                            {field.type === "select" ? (
-                              <select 
-                                id={field.name}
-                                name={field.name}
-                                required={field.required}
-                                style={{
-                                  background: "#0f172a",
-                                  color: "white",
-                                  border: "1px solid rgba(255, 255, 255, 0.15)",
-                                  borderRadius: "8px",
-                                  padding: "0.75rem 1rem",
-                                  width: "100%",
-                                  fontSize: "0.95rem"
-                                }}
-                              >
-                                {field.options.map((opt) => (
-                                  <option key={opt} value={opt} style={{ background: "#0f172a" }}>{opt}</option>
-                                ))}
-                              </select>
-                            ) : (
-                              <input
-                                id={field.name}
-                                name={field.name}
-                                type={field.type}
-                                placeholder={field.placeholder}
-                                required={field.required}
-                                style={{
-                                  background: "#0f172a",
-                                  color: "white",
-                                  border: "1px solid rgba(255, 255, 255, 0.15)",
-                                  borderRadius: "8px",
-                                  padding: "0.75rem 1rem",
-                                  width: "100%",
-                                  fontSize: "0.95rem",
-                                  outline: "none"
-                                }}
-                              />
-                            )}
-                          </div>
-                        ))}
-                        
-                        <button 
-                          className="hero-form-submit-btn" 
-                          type="submit"
-                          style={{
-                            background: primaryColor,
-                            color: "white",
-                            border: "none",
-                            padding: "0.9rem",
-                            borderRadius: "8px",
-                            fontSize: "1rem",
-                            fontWeight: "700",
-                            cursor: "pointer",
-                            transition: "opacity 0.2s",
-                            marginTop: "0.5rem"
-                          }}
-                          onMouseOver={(e) => e.currentTarget.style.opacity = "0.9"}
-                          onMouseOut={(e) => e.currentTarget.style.opacity = "1"}
-                        >
-                          {buttonText}
-                        </button>
-                      </div>
-                    </form>
+                  {/* Real Hero Section CTA Button (No forms) */}
+                  <div style={{ marginTop: "2.5rem", display: "flex", justifyContent: "center" }}>
+                    <button 
+                      style={{
+                        background: primaryColor,
+                        color: "white",
+                        border: "none",
+                        padding: "1rem 2.5rem",
+                        borderRadius: "8px",
+                        fontSize: "1.1rem",
+                        fontWeight: "800",
+                        cursor: "pointer",
+                        transition: "transform 0.2s, box-shadow 0.2s",
+                        boxShadow: `0 10px 25px rgba(0,0,0,0.4)`
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.transform = "translateY(-3px)";
+                        e.currentTarget.style.boxShadow = `0 15px 30px rgba(0,0,0,0.5)`;
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = `0 10px 25px rgba(0,0,0,0.4)`;
+                      }}
+                    >
+                      {buttonText}
+                    </button>
                   </div>
                   
                   {/* Features List */}
-                  <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "1.5rem", marginTop: "2rem" }}>
+                  <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "1.5rem", marginTop: "3.5rem" }}>
                     {template.features.map((feat, idx) => (
                       <div key={idx} style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.85rem", opacity: 0.9 }}>
                         <span style={{ color: primaryColor, fontSize: "1.2rem" }}>&bull;</span> {feat}

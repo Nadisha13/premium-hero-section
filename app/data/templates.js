@@ -12,10 +12,6 @@ export const TEMPLATES = [
     bgGradient: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
     image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
     buttonText: "Use Free Template",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "John Doe", required: true },
-      { name: "email", label: "Email Address", type: "email", placeholder: "john@example.com", required: true }
-    ],
     features: ["Standard inputs", "Responsive layout", "Clean typography"]
   },
 
@@ -32,11 +28,6 @@ export const TEMPLATES = [
     bgGradient: "linear-gradient(135deg, #FAF6F0 0%, #EFE9DB 100%)",
     image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80",
     buttonText: "Select Pro Design",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "e.g. Sarah Jenkins", required: true },
-      { name: "email", label: "Email Address", type: "email", placeholder: "sarah@example.com", required: true },
-      { name: "preference", label: "Primary Style Preference", type: "select", options: ["Womenswear", "Menswear", "Gender-Neutral"], required: true }
-    ],
     features: ["High-end editorial images", "Warm editorial typography", "Serif headers"]
   },
   {
@@ -52,11 +43,6 @@ export const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-walking-on-a-runway-41804-large.mp4",
     buttonText: "Apply For Membership",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "e.g. Julian Vance", required: true },
-      { name: "email", label: "Email Address", type: "email", placeholder: "julian@luxury.com", required: true },
-      { name: "interest", label: "Interested in", type: "select", options: ["Bespoke Tailoring", "Limited Run Collections"], required: true }
-    ],
     features: ["Cinematic dark theme", "Autoplay video background", "Glittering gold borders", "Micro-interactivity"]
   },
 
@@ -73,10 +59,6 @@ export const TEMPLATES = [
     bgGradient: "linear-gradient(135deg, #FCFBF7 0%, #F5F1E6 100%)",
     image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80",
     buttonText: "Subscribe to Gallery",
-    fields: [
-      { name: "name", label: "First Name", type: "text", placeholder: "Elena", required: true },
-      { name: "email", label: "Email Address", type: "email", placeholder: "elena@example.com", required: true }
-    ],
     features: ["Clean high-key contrast", "Dainty inputs", "Classic luxury spacing"]
   },
   {
@@ -92,10 +74,6 @@ export const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-diamond-ring-on-a-mirror-with-water-droplets-40539-large.mp4",
     buttonText: "Book Artisan Consult",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "Victoria Sterling", required: true },
-      { name: "budget", label: "Budget Range", type: "select", options: ["$5,000+", "$15,000+", "$50,000+"], required: true }
-    ],
     features: ["Midnight Navy elegance", "Autoplay video", "Gold foil shadow glows"]
   },
 
@@ -112,10 +90,6 @@ export const TEMPLATES = [
     bgGradient: "linear-gradient(180deg, #0b0f19 0%, #020617 100%)",
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
     buttonText: "Request SDK Access",
-    fields: [
-      { name: "name", label: "Developer Name", type: "text", placeholder: "Aiden Mercer", required: true },
-      { name: "role", label: "Environment", type: "select", options: ["Node.js / React", "Rust / WASM"], required: true }
-    ],
     features: ["Tech grid blueprint backdrops", "Monospace headings", "Cyberpunk neon accents"]
   },
   {
@@ -131,10 +105,6 @@ export const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-cyber-city-4098-large.mp4",
     buttonText: "Reserve Kit & Enter Portal",
-    fields: [
-      { name: "name", label: "Developer Name", type: "text", placeholder: "Elena Rostova", required: true },
-      { name: "github", label: "GitHub Profile", type: "text", placeholder: "https://github.com/elena", required: true }
-    ],
     features: ["Frosted glass card filters", "Dynamic purple/orange neon gradients", "Holographic video background"]
   },
 
@@ -151,10 +121,6 @@ export const TEMPLATES = [
     bgGradient: "linear-gradient(135deg, #f7f8f6 0%, #e2e8df 100%)",
     image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80",
     buttonText: "Claim Free Sample",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "Sophia Thorne", required: true },
-      { name: "skinType", label: "Skin Condition", type: "select", options: ["Dry & Sensitive", "Oily & Acne-Prone"], required: true }
-    ],
     features: ["Minimal organic layout", "Warm sage green accents", "Clean soft inputs"]
   },
   {
@@ -170,10 +136,6 @@ export const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-macro-shot-of-a-liquid-bubble-moving-over-water-28688-large.mp4",
     buttonText: "Request Prescription",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "Isabella Martinez", required: true },
-      { name: "primaryConcern", label: "Primary Goal", type: "select", options: ["Anti-Aging & Firming", "Hydration Boost"], required: true }
-    ],
     features: ["Soft lavender/pink gradients", "Cinematic liquid motion", "Premium consultation fields"]
   },
 
@@ -190,10 +152,6 @@ export const TEMPLATES = [
     bgGradient: "linear-gradient(135deg, #111111 0%, #000000 100%)",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
     buttonText: "Claim 3-Day Pass",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "Marcus Steele", required: true },
-      { name: "phone", label: "Mobile Number", type: "tel", placeholder: "555-019-2834", required: true }
-    ],
     features: ["High contrast red/black theme", "Slanted geometric badges", "Urgent CTA styling"]
   },
   {
@@ -209,10 +167,6 @@ export const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-man-training-with-a-kettlebell-in-the-gym-23112-large.mp4",
     buttonText: "Schedule Bio-Assessment",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "Drake Vance", required: true },
-      { name: "goal", label: "Fitness Objectives", type: "select", options: ["Competitive Bodybuilding", "Speed & Agility"], required: true }
-    ],
     features: ["Intense dynamic motion", "Vibrant glowing orange styling", "Interactive biometric goals"]
   },
 
@@ -229,10 +183,6 @@ export const TEMPLATES = [
     bgGradient: "linear-gradient(135deg, #FAF6F0 0%, #EFE5D3 100%)",
     image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=800&q=80",
     buttonText: "Join The Brew Club",
-    fields: [
-      { name: "name", label: "First Name", type: "text", placeholder: "Clara", required: true },
-      { name: "brewMethod", label: "Favorite Brew Method", type: "select", options: ["Pour Over (V60)", "Espresso Machine"], required: true }
-    ],
     features: ["Rustic typography", "Creamy organic colors", "Warm focus states"]
   },
   {
@@ -248,10 +198,6 @@ export const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-coffee-maker-making-coffee-2879-large.mp4",
     buttonText: "Configure Coffee Box",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "Gavin Croft", required: true },
-      { name: "roastPreference", label: "Roast Profile", type: "select", options: ["Light (Floral)", "Medium (Nutty)", "Dark (Smoky)"], required: true }
-    ],
     features: ["Cinematic pouring video", "Dark Espresso backdrop", "Copper accents"]
   },
 
@@ -268,10 +214,6 @@ export const TEMPLATES = [
     bgGradient: "linear-gradient(135deg, #FAF9F5 0%, #EAE7DC 100%)",
     image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80",
     buttonText: "Request Printed Catalog",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "Oliver Finch", required: true },
-      { name: "address", label: "Shipping Address", type: "text", placeholder: "123 Interior Way", required: true }
-    ],
     features: ["Clean mid-century lines", "Teak and forest accents", "Descriptive fields"]
   },
   {
@@ -287,10 +229,6 @@ export const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80",
     video: "https://assets.mixkit.co/videos/preview/mixkit-modern-living-room-with-a-large-sofa-51084-large.mp4",
     buttonText: "Schedule Planning Session",
-    fields: [
-      { name: "name", label: "Full Name", type: "text", placeholder: "Marcus Thorne", required: true },
-      { name: "budget", label: "Project Budget", type: "select", options: ["$25,000 - $75,000", "$75,000+"], required: true }
-    ],
     features: ["Interior walkthrough video", "Serif headers with glowing borders", "Ultra-premium editorial layout"]
   }
 ];
