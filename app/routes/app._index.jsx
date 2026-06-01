@@ -146,58 +146,62 @@ export default function DashboardPage() {
               <div key={tpl.id} className="template-card">
 
                 {/* Visual Preview Box */}
-                <div className={`template-visual-preview tier-${tpl.tier}`}>
-                  {tpl.tier === 'premium' && tpl.video ? (
-                    <video 
-                      className="template-media-bg" 
-                      src={tpl.video} 
-                      poster={tpl.image}
-                      autoPlay 
-                      muted 
-                      loop 
-                      playsInline 
-                    />
-                  ) : (
-                    <img 
-                      className="template-media-bg" 
-                      src={tpl.image} 
-                      alt={tpl.name} 
-                    />
-                  )}
-                  
-                  <div className="template-glass-overlay"></div>
+                <Link to={`/app/templates/${tpl.id}${location.search}`} style={{ textDecoration: "none", display: "block" }}>
+                  <div className={`template-visual-preview tier-${tpl.tier}`}>
+                    {tpl.tier === 'premium' && tpl.video ? (
+                      <video 
+                        className="template-media-bg" 
+                        src={tpl.video} 
+                        poster={tpl.image}
+                        autoPlay 
+                        muted 
+                        loop 
+                        playsInline 
+                      />
+                    ) : (
+                      <img 
+                        className="template-media-bg" 
+                        src={tpl.image} 
+                        alt={tpl.name} 
+                      />
+                    )}
+                    
+                    <div className="template-glass-overlay"></div>
 
-                  {/* Lock/Unlock Badges */}
-                  <span className={`template-badge badge-${tpl.tier}`}>
-                    {tpl.tier}
-                  </span>
+                    {/* Lock/Unlock Badges */}
+                    <span className={`template-badge badge-${tpl.tier}`}>
+                      {tpl.tier}
+                    </span>
 
-                  {/* Lock overlay on hover for locked templates */}
-                  {!unlocked && (
-                    <div className="lock-overlay">
-                      <div className="lock-icon-wrapper">
-                        <LockIcon size={22} />
+                    {/* Lock overlay on hover for locked templates */}
+                    {!unlocked && (
+                      <div className="lock-overlay">
+                        <div className="lock-icon-wrapper">
+                          <LockIcon size={22} />
+                        </div>
+                        <span className="lock-overlay-text">Locked ({tpl.tier})</span>
                       </div>
-                      <span className="lock-overlay-text">Locked ({tpl.tier})</span>
-                    </div>
-                  )}
+                    )}
 
-                  <div className="template-preview-content">
-                    <div className="template-preview-tagline">
-                      {tpl.tagline}
-                    </div>
-                    <div className="template-preview-sub">
-                      {tpl.name} Form Layout
+                    <div className="template-preview-content">
+                      <div className="template-preview-tagline">
+                        {tpl.tagline}
+                      </div>
+                      <div className="template-preview-sub">
+                        {tpl.name} Form Layout
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
 
                 {/* Card Details */}
                 <div className="template-details">
                   <span className="template-brand-name">{tpl.brand}</span>
-                  <h3 className="template-card-title">
-                    {tpl.name}
-                  </h3>
+                  <Link to={`/app/templates/${tpl.id}${location.search}`} style={{ textDecoration: "none", color: "inherit" }}>
+                    <h3 className="template-card-title" style={{ transition: "color 0.2s" }} onMouseOver={(e) => e.currentTarget.style.color = "#38bdf8"} onMouseOut={(e) => e.currentTarget.style.color = "inherit"}>
+                      {tpl.name}
+                    </h3>
+                  </Link>
                   <p className="template-card-description">{tpl.description}</p>
 
                   <div className="template-card-footer">
@@ -216,6 +220,7 @@ export default function DashboardPage() {
                     </Link>
                   </div>
                 </div>
+
 
               </div>
             );
