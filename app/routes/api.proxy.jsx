@@ -1,4 +1,3 @@
-import { json } from "react-router";
 import prisma from "../db.server";
 
 export const loader = async ({ request }) => {
@@ -7,8 +6,8 @@ export const loader = async ({ request }) => {
   const templateId = url.searchParams.get("template_id");
 
   if (!shop || !templateId) {
-    return json(
-      { error: "Missing shop or template_id parameter" },
+    return new Response(
+      JSON.stringify({ error: "Missing shop or template_id parameter" }),
       {
         status: 400,
         headers: {
@@ -29,8 +28,8 @@ export const loader = async ({ request }) => {
       },
     });
 
-    return json(
-      { success: true, customization },
+    return new Response(
+      JSON.stringify({ success: true, customization }),
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -40,8 +39,8 @@ export const loader = async ({ request }) => {
     );
   } catch (error) {
     console.error("Error in App Proxy Loader:", error);
-    return json(
-      { error: "Internal server error" },
+    return new Response(
+      JSON.stringify({ error: "Internal server error" }),
       {
         status: 500,
         headers: {
@@ -54,5 +53,15 @@ export const loader = async ({ request }) => {
 };
 
 export const action = async () => {
-  return json({ error: "Method not allowed" }, { status: 405 });
+  return new Response(
+    JSON.stringify({ error: "Method not allowed" }),
+    {
+      status: 405,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+    }
+  );
 };
+
