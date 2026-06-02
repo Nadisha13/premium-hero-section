@@ -93,7 +93,10 @@ export function ErrorBoundary() {
 
         <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", justifyContent: "center" }}>
           <button
-            onClick={() => window.location.href = "/"}
+            onClick={() => {
+              if (window.top) window.top.location.href = "/";
+              else window.location.href = "/";
+            }}
             style={{
               padding: "0.75rem 1.5rem",
               backgroundColor: "#2563eb",
@@ -110,8 +113,9 @@ export function ErrorBoundary() {
           >
             🔄 Retry Connection
           </button>
-          <Link
-            to="/"
+          <a
+            href="/"
+            target="_top"
             style={{
               padding: "0.75rem 1.5rem",
               backgroundColor: "#e5e7eb",
@@ -126,7 +130,7 @@ export function ErrorBoundary() {
             }}
           >
             🏠 Go Home
-          </Link>
+          </a>
         </div>
 
         {error && error.status && (

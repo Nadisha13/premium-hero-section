@@ -53,7 +53,7 @@ export default function App() {
         {showForm && (
           <div id="login" className="w-full max-w-md mx-auto relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-            <Form className="relative glass-card rounded-2xl p-6 flex flex-col gap-4 text-left" method="post" action="/auth/login">
+            <Form className="relative glass-card rounded-2xl p-6 flex flex-col gap-4 text-left" method="post" action="/auth/login" target="_top">
               <div>
                 <label htmlFor="shop-domain" className="block text-sm font-medium text-gray-300 mb-2">Shop domain</label>
                 <div className="relative">
