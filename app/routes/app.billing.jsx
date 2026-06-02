@@ -8,7 +8,7 @@ export const headers = (headersArgs) => {
 
 export async function loader({ request }) {
   try {
-    const { billing, redirect: shopifyRedirect } = await authenticate.admin(request);
+    const { billing } = await authenticate.admin(request);
     const url = new URL(request.url);
     const shop = url.searchParams.get("shop") || "";
     const host = url.searchParams.get("host") || "";
@@ -26,13 +26,11 @@ export async function loader({ request }) {
 
     const returnUrl = `${appUrl}/app?plan=PRO&shop=${shop}&host=${encodeURIComponent(host)}`;
 
-    const confirmation = await billing.request({
+    return await billing.request({
       plan: "Pro Plan",
       isTest: isBillingTestMode(shop),
       returnUrl: returnUrl,
     });
-
-    return shopifyRedirect(confirmation.confirmationUrl);
   } catch (error) {
     if (error instanceof Response) {
       throw error;
