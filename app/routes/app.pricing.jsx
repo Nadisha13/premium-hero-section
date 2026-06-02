@@ -4,8 +4,13 @@ import { useEffect } from "react";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 import "../styles/pricing.css";
+import { boundary } from "@shopify/shopify-app-react-router/server";
 import prisma from "../db.server";
 import { isBillingTestMode } from "../billing.server";
+
+export const headers = (headersArgs) => {
+  return boundary.headers(headersArgs);
+};
 
 export const loader = async ({ request }) => {
   const { session, billing, redirect: shopifyRedirect } = await authenticate.admin(request);

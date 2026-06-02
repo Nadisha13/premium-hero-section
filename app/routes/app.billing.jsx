@@ -1,5 +1,10 @@
 import { authenticate } from "../shopify.server";
 import { isBillingTestMode } from "../billing.server";
+import { boundary } from "@shopify/shopify-app-react-router/server";
+
+export const headers = (headersArgs) => {
+  return boundary.headers(headersArgs);
+};
 
 export async function loader({ request }) {
   try {

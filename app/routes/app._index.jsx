@@ -3,9 +3,14 @@ import { useLoaderData, Link, useLocation } from "react-router";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { TEMPLATES } from "../data/templates";
 import "../styles/dashboard.css";
+import { boundary } from "@shopify/shopify-app-react-router/server";
 import prisma from "../db.server";
 import { authenticate } from "../shopify.server";
 import { isBillingTestMode } from "../billing.server";
+
+export const headers = (headersArgs) => {
+  return boundary.headers(headersArgs);
+};
 
 export const loader = async ({ request }) => {
   const { session, billing } = await authenticate.admin(request);
