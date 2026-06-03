@@ -31,8 +31,9 @@ export const loader = async ({ request }) => {
   });
 
   let activePlan = "FREE";
-  if (billingCheck.hasActivePayment && billingCheck.appSubscriptions.length > 0) {
-    const activeSub = billingCheck.appSubscriptions.find(sub => sub.status === "ACTIVE");
+  const subscriptions = billingCheck.appSubscriptions || (billingCheck.appSubscription ? [billingCheck.appSubscription] : []);
+  if (billingCheck.hasActivePayment && subscriptions.length > 0) {
+    const activeSub = subscriptions.find(sub => sub.status === "ACTIVE");
     if (activeSub) {
       if (activeSub.name === "Pro Plan") {
         activePlan = "PRO";
@@ -83,8 +84,9 @@ export const action = async ({ request }) => {
       });
 
       // 2. Cancel active subscriptions on Shopify if any
-      if (billingCheck.hasActivePayment && billingCheck.appSubscriptions.length > 0) {
-        for (const sub of billingCheck.appSubscriptions) {
+      const actionSubscriptions = billingCheck.appSubscriptions || (billingCheck.appSubscription ? [billingCheck.appSubscription] : []);
+      if (billingCheck.hasActivePayment && actionSubscriptions.length > 0) {
+        for (const sub of actionSubscriptions) {
           if (sub.status === "ACTIVE") {
             try {
               await billing.cancel({

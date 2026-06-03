@@ -3,7 +3,7 @@ const DEV_STORE_SHOPS = new Set([
 ]);
 
 export function isBillingTestMode(shop) {
-  const configured = process.env.SHOPIFY_BILLING_TEST_MODE?.trim().toLowerCase();
+  const configured = process.env.SHOPIFY_BILLING_TEST_MODE?.trim()?.toLowerCase();
 
   if (configured) {
     return ["1", "true", "yes", "on"].includes(configured);

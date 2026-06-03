@@ -6,9 +6,20 @@ import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
-  await authenticate.admin(request);
-
-  return { apiKey: process.env.SHOPIFY_API_KEY || "" };
+  try {
+    await authenticate.admin(request);
+    return { apiKey: process.env.SHOPIFY_API_KEY || "" };
+  } catch (error) {
+    // If authenticate.admin throws a Response (e.g. redirect for OAuth), let it pass through
+    if (error instanceof Response) {
+      throw error;
+    }
+    console.error("Authentication Error in app.jsx:", error);
+    throw new Response(JSON.stringify({ error: "Authentication failed" }), { 
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
 };
 
 export default function App() {

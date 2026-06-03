@@ -13,7 +13,8 @@ export const headers = (headersArgs) => {
 };
 
 export const loader = async ({ request }) => {
-  const { session, billing } = await authenticate.admin(request);
+  try {
+    const { session, billing } = await authenticate.admin(request);
   const shop = session.shop;
 
   // Query Shopify Billing API to check active subscriptions
@@ -23,8 +24,9 @@ export const loader = async ({ request }) => {
   });
 
   let activePlan = "FREE";
-  if (billingCheck.hasActivePayment && billingCheck.appSubscriptions.length > 0) {
-    const activeSub = billingCheck.appSubscriptions.find(sub => sub.status === "ACTIVE");
+  const subscriptions = billingCheck.appSubscriptions || (billingCheck.appSubscription ? [billingCheck.appSubscription] : []);
+  if (billingCheck.hasActivePayment && subscriptions.length > 0) {
+    const activeSub = subscriptions.find(sub => sub.status === "ACTIVE");
     if (activeSub) {
       if (activeSub.name === "Pro Plan") {
         activePlan = "PRO";
@@ -49,6 +51,14 @@ export const loader = async ({ request }) => {
     shop,
     upgraded,
   };
+  } catch (error) {
+    if (error instanceof Response) throw error;
+    console.error("Dashboard Loader Error:", error);
+    throw new Response(JSON.stringify({ error: "Failed to load dashboard" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
 };
 
 export default function DashboardPage() {
