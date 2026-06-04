@@ -2,7 +2,7 @@
   "name": "premium-hero-section",
   "private": true,
   "scripts": {
-    "build": "react-router build",
+    "build": "prisma generate && prisma db push && react-router build",
     "dev": "npx shopify app dev",
     "dev:stable": "node start-dev.js",
     "config:link": "shopify app config link",
