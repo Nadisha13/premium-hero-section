@@ -133,10 +133,18 @@ export function ErrorBoundary() {
           </a>
         </div>
 
-        {error && error.status && (
-          <p style={{ marginTop: "2rem", fontSize: "0.875rem", color: "#9ca3af" }}>
-            Error {error.status}: {error.statusText || "Unknown Error"}
-          </p>
+        {error && (
+          <div style={{ marginTop: "2rem", textAlign: "left", fontSize: "0.875rem", color: "#9ca3af", width: "100%", wordBreak: "break-all" }}>
+            {error.status && <p><strong>Status:</strong> {error.status} {error.statusText}</p>}
+            {error.data && (
+              <details style={{ marginTop: "0.5rem" }}>
+                <summary style={{ cursor: "pointer", color: "#6b7280" }}>View Error Details</summary>
+                <pre style={{ marginTop: "0.5rem", padding: "1rem", backgroundColor: "#f3f4f6", borderRadius: "6px", color: "#ef4444", whiteSpace: "pre-wrap", overflowX: "auto" }}>
+                  {typeof error.data === 'string' ? error.data : JSON.stringify(error.data, null, 2)}
+                </pre>
+              </details>
+            )}
+          </div>
         )}
       </div>
     </div>

@@ -7,6 +7,7 @@ import { boundary } from "@shopify/shopify-app-react-router/server";
 import prisma from "../db.server";
 import { authenticate } from "../shopify.server";
 import { isBillingTestMode } from "../billing.server";
+import { syncPlanToMetafield } from "../utils/metafields.server";
 
 export const headers = (headersArgs) => {
   return boundary.headers(headersArgs);
@@ -14,47 +15,68 @@ export const headers = (headersArgs) => {
 
 export const loader = async ({ request }) => {
   try {
-    const { session, billing } = await authenticate.admin(request);
-  const shop = session.shop;
-
-  // Query Shopify Billing API to check active subscriptions
-  const billingCheck = await billing.check({
-    plans: ["Pro Plan", "Elite Plan"],
-    isTest: isBillingTestMode(shop),
-  });
-
-  let activePlan = "FREE";
-  const subscriptions = billingCheck.appSubscriptions || (billingCheck.appSubscription ? [billingCheck.appSubscription] : []);
-  if (billingCheck.hasActivePayment && subscriptions.length > 0) {
-    const activeSub = subscriptions.find(sub => sub.status === "ACTIVE");
-    if (activeSub) {
-      if (activeSub.name === "Pro Plan") {
-        activePlan = "PRO";
-      } else if (activeSub.name === "Elite Plan") {
-        activePlan = "PREMIUM";
+    console.log(`[loader:app._index.jsx] Authenticating request: ${request.url}`);
+    const { session, billing, admin } = await authenticate.admin(request);
+    const shop = session.shop;
+    console.log(`[loader:app._index.jsx] Authenticated successfully. Shop: ${shop}`);
+ 
+    // Query Shopify Billing API to check active subscriptions
+    console.log(`[loader:app._index.jsx] Checking billing status for shop: ${shop}`);
+    const billingCheck = await billing.check({
+      plans: ["Pro Plan", "Elite Plan"],
+      isTest: isBillingTestMode(shop),
+    });
+ 
+    let activePlan = "FREE";
+    const subscriptions = billingCheck.appSubscriptions || (billingCheck.appSubscription ? [billingCheck.appSubscription] : []);
+    if (billingCheck.hasActivePayment && subscriptions.length > 0) {
+      const activeSub = subscriptions.find(sub => sub.status === "ACTIVE");
+      if (activeSub) {
+        if (activeSub.name === "Pro Plan") {
+          activePlan = "PRO";
+        } else if (activeSub.name === "Elite Plan") {
+          activePlan = "PREMIUM";
+        }
       }
     }
-  }
-
-  // Sync database subscription status
-  const dbSubscription = await prisma.shopSubscription.upsert({
-    where: { shop },
-    update: { plan: activePlan },
-    create: { shop, plan: activePlan },
-  });
-
-  const url = new URL(request.url);
-  const upgraded = url.searchParams.get("upgraded") === "true";
-
-  return {
-    plan: dbSubscription.plan,
-    shop,
-    upgraded,
-  };
+    console.log(`[loader:app._index.jsx] Shopify billing plan detected: ${activePlan}`);
+ 
+    // Sync database subscription status
+    console.log(`[loader:app._index.jsx] Syncing subscription status in database for ${shop}`);
+    const dbSubscription = await prisma.shopSubscription.upsert({
+      where: { shop },
+      update: { plan: activePlan },
+      create: { shop, plan: activePlan },
+    });
+ 
+    // Sync to Shopify AppInstallation Metafield
+    console.log(`[loader:app._index.jsx] Syncing plan to Shopify metafield for ${shop}`);
+    await syncPlanToMetafield(admin, activePlan);
+ 
+    const url = new URL(request.url);
+    const upgraded = url.searchParams.get("upgraded") === "true";
+ 
+    return {
+      plan: dbSubscription.plan,
+      shop,
+      upgraded,
+    };
   } catch (error) {
-    if (error instanceof Response) throw error;
-    console.error("Dashboard Loader Error:", error);
-    throw new Response(JSON.stringify({ error: "Failed to load dashboard" }), {
+    const isResponse = error instanceof Response || (error && typeof error.status === "number");
+    if (isResponse) {
+      console.log(`[loader:app._index.jsx] Redirect or expected auth Response thrown (status: ${error.status || 'unknown'}). Re-throwing.`);
+      throw error;
+    }
+    console.error("🚨 Detailed Dashboard Loader Error:", error);
+    if (error && typeof error === "object") {
+      console.error("Error name/message:", error.name, "-", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    throw new Response(JSON.stringify({ 
+      error: "Failed to load dashboard",
+      details: error?.message || "Unknown error during dashboard load",
+      stack: process.env.NODE_ENV === "development" ? error?.stack : undefined
+    }), {
       status: 500,
       headers: { "Content-Type": "application/json" }
     });

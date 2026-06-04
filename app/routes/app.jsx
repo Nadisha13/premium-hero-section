@@ -7,15 +7,27 @@ import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }) => {
   try {
-    await authenticate.admin(request);
+    console.log(`[loader:app.jsx] Authenticating request: ${request.url}`);
+    const authResult = await authenticate.admin(request);
+    console.log(`[loader:app.jsx] Authentication successful. Shop: ${authResult?.session?.shop}`);
     return { apiKey: process.env.SHOPIFY_API_KEY || "" };
   } catch (error) {
-    // If authenticate.admin throws a Response (e.g. redirect for OAuth), let it pass through
-    if (error instanceof Response) {
+    // If it's a redirect or auth response, re-throw it so Shopify/React Router can handle it.
+    const isResponse = error instanceof Response || (error && typeof error.status === "number");
+    if (isResponse) {
+      console.log(`[loader:app.jsx] Redirect or expected auth Response thrown (status: ${error.status || 'unknown'}). Re-throwing.`);
       throw error;
     }
-    console.error("Authentication Error in app.jsx:", error);
-    throw new Response(JSON.stringify({ error: "Authentication failed" }), { 
+    console.error("🚨 Detailed Authentication Error in app.jsx:", error);
+    if (error && typeof error === "object") {
+      console.error("Error name/message:", error.name, "-", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    throw new Response(JSON.stringify({ 
+      error: "Authentication failed",
+      details: error?.message || "Unknown error during authentication",
+      stack: process.env.NODE_ENV === "development" ? error?.stack : undefined
+    }), { 
       status: 500,
       headers: { "Content-Type": "application/json" }
     });

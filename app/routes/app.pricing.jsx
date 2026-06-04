@@ -7,13 +7,14 @@ import "../styles/pricing.css";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import prisma from "../db.server";
 import { isBillingTestMode } from "../billing.server";
+import { syncPlanToMetafield } from "../utils/metafields.server";
 
 export const headers = (headersArgs) => {
   return boundary.headers(headersArgs);
 };
 
 export const loader = async ({ request }) => {
-  const { session, billing, redirect: shopifyRedirect } = await authenticate.admin(request);
+  const { session, billing, admin, redirect: shopifyRedirect } = await authenticate.admin(request);
   const shop = session.shop;
 
   const url = new URL(request.url);
@@ -52,6 +53,9 @@ export const loader = async ({ request }) => {
     });
   }
 
+  // Always sync to Shopify AppInstallation Metafield
+  await syncPlanToMetafield(admin, activePlan);
+
   // 4. If they just upgraded (oldPlan was FREE or different, and new activePlan is paid), redirect to dashboard
   if (oldPlan !== activePlan && activePlan !== "FREE") {
     const host = url.searchParams.get("host") || "";
@@ -63,7 +67,7 @@ export const loader = async ({ request }) => {
 
 export const action = async ({ request }) => {
   try {
-    const { billing, session, redirect: shopifyRedirect } = await authenticate.admin(request);
+    const { billing, session, admin, redirect: shopifyRedirect } = await authenticate.admin(request);
 
     if (request.method !== "POST") {
       return { error: "Invalid request method" };
@@ -107,6 +111,9 @@ export const action = async ({ request }) => {
         update: { plan: "FREE" },
         create: { shop, plan: "FREE" },
       });
+
+      // Sync to Shopify AppInstallation Metafield
+      await syncPlanToMetafield(admin, "FREE");
 
       return shopifyRedirect(`/app?shop=${shop}&host=${encodeURIComponent(host)}`);
     }

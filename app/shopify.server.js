@@ -14,23 +14,52 @@ import prisma from "./db.server";
 
 // Get correct app URL
 function getAppUrl() {
-  if (process.env.NODE_ENV === "development" && process.env.HOST) {
-    return process.env.HOST.replace(/\/$/, "");
-  }
-
   const configuredUrl = process.env.SHOPIFY_APP_URL?.trim();
 
+  // In production, strictly prefer SHOPIFY_APP_URL to prevent origin mismatches.
   if (configuredUrl) {
+    console.log(`[shopify.server.js] Using SHOPIFY_APP_URL: ${configuredUrl}`);
     return configuredUrl.replace(/\/$/, "");
   }
 
-  const vercelUrl = process.env.VERCEL_URL?.trim();
-
-  if (vercelUrl) {
-    return `https://${vercelUrl.replace(/\/$/, "")}`;
+  if (process.env.NODE_ENV === "development" && process.env.HOST) {
+    console.log(`[shopify.server.js] Development mode. Using HOST: ${process.env.HOST}`);
+    return process.env.HOST.replace(/\/$/, "");
   }
 
-  return "";
+  // Fallback to registered production domain instead of ephemeral Vercel URLs to prevent postMessage mismatches
+  if (process.env.NODE_ENV === "production" || !process.env.NODE_ENV) {
+    console.warn("⚠️ [shopify.server.js] SHOPIFY_APP_URL environment variable is missing in production!");
+    console.warn("⚠️ Falling back to registered production domain: https://herosection.unitradein.com to prevent origin mismatch");
+    return "https://herosection.unitradein.com";
+  }
+
+  const vercelUrl = process.env.VERCEL_URL?.trim();
+  if (vercelUrl) {
+    const fallbackUrl = `https://${vercelUrl.replace(/\/$/, "")}`;
+    console.log(`[shopify.server.js] Using VERCEL_URL fallback: ${fallbackUrl}`);
+    return fallbackUrl;
+  }
+
+  return "https://herosection.unitradein.com";
+}
+
+// Validation: Prevent silent failures later by checking required config on startup
+console.log(`[shopify.server.js] Starting app in ${process.env.NODE_ENV || 'development'} mode.`);
+console.log(`[shopify.server.js] Resolved app URL: ${getAppUrl()}`);
+
+if (process.env.NODE_ENV === "production") {
+  const missing = [];
+  if (!process.env.SHOPIFY_API_KEY) missing.push("SHOPIFY_API_KEY");
+  if (!process.env.SHOPIFY_API_SECRET) missing.push("SHOPIFY_API_SECRET");
+  if (!process.env.SHOPIFY_APP_URL) missing.push("SHOPIFY_APP_URL");
+
+  if (missing.length > 0) {
+    console.error(`🚨 FATAL ERROR: Missing required environment variables: ${missing.join(", ")}`);
+    console.error(`🚨 The app will fail to authenticate or load in Shopify Admin.`);
+  } else {
+    console.log("✅ All required production environment variables are present.");
+  }
 }
 
 // Persistent Prisma session storage

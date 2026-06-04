@@ -9,6 +9,9 @@
 {%- assign bg_image = block.settings.bg_image -%}
 {%- assign template_id = block.settings.template_id -%}
 
+{%- assign current_plan = app.metafields.premium_hero.plan.value | default: 'FREE' -%}
+{%- if current_plan == 'PREMIUM' -%}
+
 <div 
   id="premium-hero-wrapper-{{ block.id }}"
   class="hero-template-wrapper tpl-{{ template_id }}"
@@ -64,6 +67,13 @@
     </div>
   </div>
 </div>
+
+{%- else -%}
+  <div style="background-color: #fef2f2; border: 1px solid #fca5a5; padding: 2rem; text-align: center; border-radius: 8px; font-family: sans-serif; color: #991b1b; margin: 1rem 0;">
+    <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; color: #991b1b;">🔒 Premium Template Locked</h2>
+    <p style="margin: 0; font-size: 0.9rem;">This template requires the Premium plan. Please upgrade your plan in the Premium Hero Section app to use this design.</p>
+  </div>
+{%- endif -%}
 
 {% schema %}
 {
