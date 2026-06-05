@@ -133,15 +133,20 @@ export const action = async ({ request }) => {
 
     if (process.env.NODE_ENV === "development") {
       appUrl = process.env.HOST || hostHeader || appUrl;
-    } else if (hostHeader && (
-      hostHeader.includes("localhost") || 
-      hostHeader.includes("trycloudflare.com") || 
-      hostHeader.includes("ngrok") || 
-      hostHeader.includes("portainer") ||
-      hostHeader.includes("tunnelmole.net") ||
-      hostHeader.includes("loca.lt")
-    )) {
-      appUrl = hostHeader;
+      // Also fallback to host header if it's a known tunnel URL in dev mode
+      if (!appUrl && hostHeader && (
+        hostHeader.includes("localhost") || 
+        hostHeader.includes("trycloudflare.com") || 
+        hostHeader.includes("ngrok") || 
+        hostHeader.includes("portainer") ||
+        hostHeader.includes("tunnelmole.net") ||
+        hostHeader.includes("loca.lt")
+      )) {
+        appUrl = hostHeader;
+      }
+    } else {
+      // In production, strictly use SHOPIFY_APP_URL
+      appUrl = process.env.SHOPIFY_APP_URL;
     }
 
     if (appUrl && !appUrl.startsWith("http")) {

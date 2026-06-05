@@ -55,11 +55,19 @@ if (process.env.NODE_ENV === "production") {
   if (!process.env.SHOPIFY_APP_URL) missing.push("SHOPIFY_APP_URL");
 
   if (missing.length > 0) {
-    console.error(`🚨 FATAL ERROR: Missing required environment variables: ${missing.join(", ")}`);
-    console.error(`🚨 The app will fail to authenticate or load in Shopify Admin.`);
-  } else {
-    console.log("✅ All required production environment variables are present.");
+    const errorMsg = `🚨 FATAL ERROR: Missing required environment variables: ${missing.join(", ")}`;
+    console.error(errorMsg);
+    throw new Error(errorMsg);
   }
+
+  const appUrl = process.env.SHOPIFY_APP_URL || "";
+  if (appUrl.includes("trycloudflare.com") || appUrl.includes("ngrok") || appUrl.includes("tunnelmole.net") || appUrl.includes("localhost")) {
+    const errorMsg = `🚨 FATAL ERROR: SHOPIFY_APP_URL contains a development tunnel URL (${appUrl}) but NODE_ENV is production.`;
+    console.error(errorMsg);
+    throw new Error(errorMsg);
+  }
+
+  console.log("✅ All required production environment variables are present and valid.");
 }
 
 // Persistent Prisma session storage

@@ -28,8 +28,8 @@ export default defineConfig({
 
     // Disable HMR for Cloudflare tunnel to prevent WebSocket errors
     // Cloudflare doesn't handle WebSocket HMR well, so we disable it
-    hmr: process.env.NODE_ENV === "development" && process.env.SHOPIFY_APP_URL
-      ? false  // Disable HMR when using tunnel URLs (Cloudflare, ngrok, etc.)
+    hmr: process.env.NODE_ENV === "development" && process.env.SHOPIFY_APP_URL && (process.env.SHOPIFY_APP_URL.includes("trycloudflare.com") || process.env.SHOPIFY_APP_URL.includes("tunnelmole.net") || process.env.SHOPIFY_APP_URL.includes("ngrok"))
+      ? false  // Disable HMR when using tunnel URLs (Cloudflare, ngrok, tunnelmole)
       : true,  // Enable HMR for local development only
 
     fs: {
