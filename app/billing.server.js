@@ -3,22 +3,8 @@ const DEV_STORE_SHOPS = new Set([
 ]);
 
 export async function isDevelopmentStore(admin) {
-  try {
-    const response = await admin.graphql(`
-      #graphql
-      query {
-        shop {
-          plan {
-            partnerDevelopment
-          }
-        }
-      }
-    `);
-    const data = await response.json();
-    return data?.data?.shop?.plan?.partnerDevelopment === true;
-  } catch (error) {
-    console.error("Failed to query shop plan partnerDevelopment:", error);
-    return false;
-  }
+  // Unconditionally return false to ensure ALL charges are actual charges.
+  // Test charges have been completely disabled as requested.
+  return false;
 }
 
