@@ -6,7 +6,7 @@ import "../styles/premium-templates.css";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import prisma from "../db.server";
 import { authenticate } from "../shopify.server";
-import { isBillingTestMode } from "../billing.server";
+import { isDevelopmentStore } from "../billing.server";
 import { syncPlanToMetafield } from "../utils/metafields.server";
 
 export const headers = (headersArgs) => {
@@ -22,9 +22,10 @@ export const loader = async ({ params, request }) => {
  
     // Query Shopify Billing API to check active subscriptions
     console.log(`[loader:app.templates.$templateId.jsx] Checking billing status for shop: ${shop}`);
+    const isTest = await isDevelopmentStore(admin);
     const billingCheck = await billing.check({
       plans: ["Pro Plan", "Elite Plan"],
-      isTest: isBillingTestMode(shop),
+      isTest,
     });
  
     let activePlan = "FREE";

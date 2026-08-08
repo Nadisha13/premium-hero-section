@@ -6,7 +6,7 @@ import { authenticate } from "../shopify.server";
 import "../styles/pricing.css";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import prisma from "../db.server";
-import { isBillingTestMode } from "../billing.server";
+import { isDevelopmentStore } from "../billing.server";
 import { syncPlanToMetafield } from "../utils/metafields.server";
 
 export const headers = (headersArgs) => {
@@ -26,7 +26,7 @@ export const loader = async ({ request }) => {
   const oldPlan = subscription ? subscription.plan : "FREE";
 
   // 2. Query Shopify Billing API to check active subscriptions
-  const isTest = isBillingTestMode(shop);
+  const isTest = await isDevelopmentStore(admin);
   console.log(`[Pricing Loader] Checking billing for shop: ${shop} (TestMode: ${isTest})`);
 
   const billingCheck = await billing.check({
@@ -93,7 +93,7 @@ export const action = async ({ request }) => {
       const host = url.searchParams.get("host") || "";
 
       // 1. Query Shopify Billing API to check active subscriptions
-      const isTest = isBillingTestMode(shop);
+      const isTest = await isDevelopmentStore(admin);
       console.log(`[Pricing Action - FREE] Checking active subscriptions to cancel for shop: ${shop} (TestMode: ${isTest})`);
       const billingCheck = await billing.check({
         plans: ["Pro Plan", "Elite Plan"],
@@ -108,7 +108,7 @@ export const action = async ({ request }) => {
             try {
               await billing.cancel({
                 subscriptionId: sub.id,
-                isTest: isBillingTestMode(shop),
+                isTest: isTest,
                 prorate: true,
               });
             } catch (err) {
@@ -178,7 +178,7 @@ export const action = async ({ request }) => {
     let returnUrl = appUrl.startsWith("http") ? appUrl : `https://${appUrl}`;
     returnUrl = `${returnUrl}/app/pricing?plan=${planName}&shop=${shop}&host=${encodeURIComponent(host)}`;
 
-    const isTest = isBillingTestMode(shop);
+    const isTest = await isDevelopmentStore(admin);
     console.log(`[Pricing Action] Requesting billing creation - Shop: ${shop}, Plan: ${targetPlan}, TestMode: ${isTest}`);
 
     // Request billing charge. This will return a redirect Response to the confirmation URL.

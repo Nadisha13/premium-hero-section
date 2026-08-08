@@ -1,5 +1,5 @@
 import { authenticate } from "../shopify.server";
-import { isBillingTestMode } from "../billing.server";
+import { isDevelopmentStore } from "../billing.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 
 export const headers = (headersArgs) => {
@@ -8,7 +8,7 @@ export const headers = (headersArgs) => {
 
 export async function loader({ request }) {
   try {
-    const { billing, session } = await authenticate.admin(request);
+    const { billing, session, admin } = await authenticate.admin(request);
     const url = new URL(request.url);
     const shop = session.shop;
     const host = url.searchParams.get("host") || "";
@@ -25,7 +25,7 @@ export async function loader({ request }) {
     }
 
     const returnUrl = `${appUrl}/app?plan=PRO&shop=${shop}&host=${encodeURIComponent(host)}`;
-    const isTest = isBillingTestMode(shop);
+    const isTest = await isDevelopmentStore(admin);
 
     console.log(`[Billing Loader] Requesting PRO billing - Shop: ${shop}, TestMode: ${isTest}`);
 
