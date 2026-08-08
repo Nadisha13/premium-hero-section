@@ -8,9 +8,9 @@ export const headers = (headersArgs) => {
 
 export async function loader({ request }) {
   try {
-    const { billing } = await authenticate.admin(request);
+    const { billing, session } = await authenticate.admin(request);
     const url = new URL(request.url);
-    const shop = url.searchParams.get("shop") || "";
+    const shop = session.shop;
     const host = url.searchParams.get("host") || "";
 
     let appUrl = process.env.SHOPIFY_APP_URL || process.env.HOST;
@@ -25,10 +25,13 @@ export async function loader({ request }) {
     }
 
     const returnUrl = `${appUrl}/app?plan=PRO&shop=${shop}&host=${encodeURIComponent(host)}`;
+    const isTest = isBillingTestMode(shop);
+
+    console.log(`[Billing Loader] Requesting PRO billing - Shop: ${shop}, TestMode: ${isTest}`);
 
     return await billing.request({
       plan: "Pro Plan",
-      isTest: isBillingTestMode(shop),
+      isTest,
       returnUrl: returnUrl,
     });
   } catch (error) {

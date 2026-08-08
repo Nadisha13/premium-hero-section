@@ -26,16 +26,27 @@ export const loader = async ({ request }) => {
   const oldPlan = subscription ? subscription.plan : "FREE";
 
   // 2. Query Shopify Billing API to check active subscriptions
+  const isTest = isBillingTestMode(shop);
+  console.log(`[Pricing Loader] Checking billing for shop: ${shop} (TestMode: ${isTest})`);
+
   const billingCheck = await billing.check({
     plans: ["Pro Plan", "Elite Plan"],
-    isTest: isBillingTestMode(shop),
+    isTest,
   });
 
   let activePlan = "FREE";
   const subscriptions = billingCheck.appSubscriptions || (billingCheck.appSubscription ? [billingCheck.appSubscription] : []);
+  
+  if (subscriptions.length > 0) {
+    subscriptions.forEach(sub => {
+      console.log(`[Pricing Loader] Found Subscription - ID: ${sub.id}, Name: ${sub.name}, Status: ${sub.status}, Test: ${sub.test}`);
+    });
+  }
+
   if (billingCheck.hasActivePayment && subscriptions.length > 0) {
     const activeSub = subscriptions.find(sub => sub.status === "ACTIVE");
     if (activeSub) {
+      console.log(`[Pricing Loader] Active subscription recognized: ${activeSub.name}`);
       if (activeSub.name === "Pro Plan") {
         activePlan = "PRO";
       } else if (activeSub.name === "Elite Plan") {
@@ -78,13 +89,15 @@ export const action = async ({ request }) => {
 
     if (planName === "FREE") {
       const url = new URL(request.url);
-      const shop = url.searchParams.get("shop") || session.shop;
+      const shop = session.shop;
       const host = url.searchParams.get("host") || "";
 
       // 1. Query Shopify Billing API to check active subscriptions
+      const isTest = isBillingTestMode(shop);
+      console.log(`[Pricing Action - FREE] Checking active subscriptions to cancel for shop: ${shop} (TestMode: ${isTest})`);
       const billingCheck = await billing.check({
         plans: ["Pro Plan", "Elite Plan"],
-        isTest: isBillingTestMode(shop),
+        isTest,
       });
 
       // 2. Cancel active subscriptions on Shopify if any
@@ -159,18 +172,19 @@ export const action = async ({ request }) => {
     }
 
     const url = new URL(request.url);
-    const shop = url.searchParams.get("shop") || session.shop;
+    const shop = session.shop;
     const host = url.searchParams.get("host") || "";
 
     let returnUrl = appUrl.startsWith("http") ? appUrl : `https://${appUrl}`;
     returnUrl = `${returnUrl}/app/pricing?plan=${planName}&shop=${shop}&host=${encodeURIComponent(host)}`;
 
-    console.log("Requesting billing for plan:", targetPlan);
+    const isTest = isBillingTestMode(shop);
+    console.log(`[Pricing Action] Requesting billing creation - Shop: ${shop}, Plan: ${targetPlan}, TestMode: ${isTest}`);
 
     // Request billing charge. This will return a redirect Response to the confirmation URL.
     return await billing.request({
       plan: targetPlan,
-      isTest: isBillingTestMode(shop),
+      isTest,
       returnUrl: returnUrl,
     });
 
