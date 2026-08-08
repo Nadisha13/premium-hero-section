@@ -279,7 +279,7 @@ export default function PricingPage() {
             {/*{currentPlan === "FREE" && <div className="popular-badge">Popular Upgrade</div>}*/}
             <div className="pricing-card-header">
               <h2 className="pricing-card-title">Pro Creator</h2>
-              <div className="pricing-card-price">$49</div>
+              <div className="pricing-card-price">$19</div>
               <div className="pricing-card-period">per month</div>
             </div>
             <ul className="pricing-features-list">

@@ -136,7 +136,7 @@ SHOPIFY_APP_URL=https://herosection.unitradein.com (production)
 
 **Shopify Partner Settings:**
 - [ ] App URL matches your deployment URL
-- [ ] Billing plans created: "Pro Plan" ($49/mo) and "Elite Plan" ($99/mo)
+- [ ] Billing plans created: "Pro Plan" ($19/mo) and "Elite Plan" ($99/mo)
 - [ ] Test mode DISABLED in Shopify settings (for production)
 
 ---
