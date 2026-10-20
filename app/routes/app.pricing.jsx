@@ -293,7 +293,7 @@ export default function PricingPage() {
             {/*{currentPlan === "FREE" && <div className="popular-badge">Popular Upgrade</div>}*/}
             <div className="pricing-card-header">
               <h2 className="pricing-card-title">Pro Creator</h2>
-              <div className="pricing-card-price">$19</div>
+              <div className="pricing-card-price">$89</div>
               <div className="pricing-card-period">per month</div>
             </div>
             <ul className="pricing-features-list">
@@ -330,7 +330,7 @@ export default function PricingPage() {
             {currentPlan === "PREMIUM" && <div className="active-badge" style={{ background: "#a855f7" }}>Current Plan</div>}
             <div className="pricing-card-header">
               <h2 className="pricing-card-title" style={{ color: "#a855f7" }}>Elite Premium</h2>
-              <div className="pricing-card-price">$99</div>
+              <div className="pricing-card-price">$119</div>
               <div className="pricing-card-period">per month</div>
             </div>
             <ul className="pricing-features-list">
